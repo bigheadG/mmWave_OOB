@@ -13,9 +13,9 @@ update:
 
 import serial
 import numpy as np
-import pc3_oob
 import time
-
+#from mmWave import pc3_oob
+import pc3_oob
 cfg = 0
 PORT_CFG = "/dev/tty.usbmodemGY0050511"
 PORT_DATA = "/dev/tty.usbmodemGY0050514"
@@ -45,15 +45,21 @@ if cfg == 1:
 
 port  = serial.Serial(PORT_DATA,baudrate = 921600 , timeout = 0.5)
 radar = pc3_oob.Pc3_OOB(port)
-radar.sm = True
+#radar.sm = True
 
 def radarExec(name):
 	print("mmWave: {:} example:".format(name))
 	while True:
-		(dck,v1,v6,v9)  = radar.tlvRead(True,df = 'DataFrame')
+		(dck,v1,v6,v9)  = radar.tlvRead(False,df = 'DataFrame')
 		#if len(radar.v2) != 0:
 		# print(radar.v2) 
-		print(v6)
+		if not v1.empty:
+			print(v1)
+		if not v6.empty:
+			print(v6)
+		if not v9.empty:
+			print(v9)
+ 
 
 radarExec("OOB mmWave")
 
