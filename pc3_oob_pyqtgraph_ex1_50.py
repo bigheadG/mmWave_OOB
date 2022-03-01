@@ -56,11 +56,12 @@ import struct
 import sys
 
 from threading import Thread
+'''
 import datetime
 from scipy.fftpack import fft
 import numpy as np
 from scipy import signal
-
+'''
 
 
 cfg = 0
@@ -186,13 +187,19 @@ port  = serial.Serial(PORT_DATA,baudrate = 921600 , timeout = 0.5)
 radar = pc3_oob.Pc3_OOB(port)
 
 v2 = []
+prev_fn = 0 
 
 def radarExec():
-	global rp,sensor0A,rangeA,rangeAY,p2xtick,scaleX
+	global rp,sensor0A,rangeA,rangeAY,p2xtick,scaleX,prev_fn
 	 
 	(dck,v1,v6,v9)  = radar.tlvRead(False,df = 'DataFrame')
 	#radar.headerShow()
-	 
+	
+	fn = radar.hdr.frameNumber
+	if prev_fn == fn: 
+		prev_fn = fn
+		return
+		
 	if len(radar.v2) != 0:
 		rp = np.array(radar.v2)
 		 
@@ -219,9 +226,8 @@ def radarExec():
 	if not v9.empty:
 		print(v9) 
 	
-	hdr = radar.getHeader()
-
-	port.flushInput()
+	
+	
 		
 		 
 def uartThread(name):
