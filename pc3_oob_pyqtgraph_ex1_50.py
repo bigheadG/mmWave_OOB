@@ -49,10 +49,9 @@ from pyqtgraph.Qt import QtCore, QtGui
 import numpy as np
 
 import serial
-import pc3_oob
-
+from mmWave import pc3_oob
 import time
-import struct
+
 import sys
 
 from threading import Thread
@@ -64,7 +63,7 @@ from scipy import signal
 '''
 
 
-cfg = 0
+cfg = 1
 PORT_CFG = "/dev/tty.usbmodemGY0050511"
 PORT_DATA = "/dev/tty.usbmodemGY0050514"
 
@@ -181,8 +180,6 @@ if cfg == 1:
 		
 
 
-
- 
 port  = serial.Serial(PORT_DATA,baudrate = 921600 , timeout = 0.5)
 radar = pc3_oob.Pc3_OOB(port)
 
@@ -195,11 +192,12 @@ def radarExec():
 	(dck,v1,v6,v9)  = radar.tlvRead(False,df = 'DataFrame')
 	#radar.headerShow()
 	
+	'''
 	fn = radar.hdr.frameNumber
 	if prev_fn == fn: 
 		prev_fn = fn
 		return
-		
+	'''
 	if len(radar.v2) != 0:
 		rp = np.array(radar.v2)
 		 
