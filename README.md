@@ -52,15 +52,6 @@ If Run demo program can not find any Raw data output:
       $ls -l /dev/ttyTHS1
       $sudo chmod +777 /dev/ttyTHS1
 
-## pyqtgraph_3d_pc3_xyz.py screenshot
-
-![MainMenu 1](https://github.com/bigheadG/imageDir/blob/master/pc3_xyz.png)
-
-## pyqtgraph_3d_pc3_occupancy.py screenshot
-
- 
-https://user-images.githubusercontent.com/2010446/118247174-7510c880-b4d5-11eb-91a2-173c0d3ddb3b.mov
-
 
 
  # import lib
@@ -147,7 +138,7 @@ https://user-images.githubusercontent.com/2010446/118247174-7510c880-b4d5-11eb-9
         0  387   v9        0  64807      48      49      49      49      50      50      50     51       49       49
 
 
-    V1: Detected Points: (data type:dataframe & list)
+## V1: Detected Points: (data type:dataframe & list)
     Will output Array of detected points, Each point is represented by a giving postion(X,Y,Z) and Doppler velocity.
     
         point Struct:
@@ -181,58 +172,19 @@ https://user-images.githubusercontent.com/2010446/118247174-7510c880-b4d5-11eb-9
 
 https://user-images.githubusercontent.com/2010446/156316819-086a1902-4a1e-49d1-be57-2870749d0a7d.mov
     
-    
-
-# Data Structure(Raw Data):
-V6: Point Cloud<br/>
-Each Point Cloud list consists of an array of points,Each point data structure is defined as following
-   
-    point Struct:
-        elevation: float  #Elevation in radians
-        azimuth:  float   #Azimuth in radians 
-        doppler:  float   #Doppler in m/s
-        range:    float   #Range in meters
-        snr:      float   #SNR, ratio
-        
-V7: Target Object<br/>
-Each Target List consists of an array of targets. Each target data structure defind as following:
-    
-    target Struct:
-        tid: Int        #Track ID
-        posX: float     #Target position in X, m
-        posY: float     #Target position in Y, m
-        velX: float     #Target velocity in X, m/s
-        velY: float     #Target velocity in Y, m/s
-        accX: float     #Target velocity in X, m/s2 
-        accY: float     #Target velocity in Y, m/s2
-        posZ: float     #Target position in Z, m
-        velZ: float     #Target velocity in Z, m/s
-        accZ: float     #Target velocity in Z, m/s2
-        
-V8: Target Index<br/> 
-Each Target List consists of an array of target IDs, A targetID at index i is the target to which point i of the previous frame's point cloud was associated. Valid IDs range from 0-249
-        
-    TargetIndex Struct(V8):
-        tragetID: Int #Track ID
-        {targetID0,targetID1,.....targetIDn}
-        
-        Other Target ID values:
-        253:Point not associated, SNR to weak
-        254:Point not associated, located outside boundary of interest
-        255:Point not associated, considered as noise
-   
-    Function call: 
-        
-        (dck,v6,v7,v8) = radar.tlvRead(False)
+  
+## Main function:
+ 
+        (dck,v1,v6,v9)  = radar.tlvRead(False,df = 'DataFrame')
         dck : True  : data avaliable
               False : data invalid
-        v6: point cloud of array
-        v7: target object of array
-        v8: target id of array
+        v1: Detected Points
+        v6: Statistics information
+        v9: Temperature Statistics
 
-        return dck,v6,v7,v8 
+        return dck, v1,v6,v9 
       
-      
+   
         getHeader()
         headerShow()
         
@@ -251,7 +203,7 @@ Each Target List consists of an array of target IDs, A targetID at index i is th
 ## Reference
 
  
-1. LabGuide: https://github.com/bigheadG/mmWaveDocs/blob/master/3d_pplcount_user_guide.pdf
+1. LabGuide: 
 
 
 
