@@ -34,8 +34,8 @@ Library update:
 
 Examples:
     
-    pyqtgraph_3d_pc3_xyz.py # show detected point cloud in 3D
-    pyqtgraph_3d_pc3_occupancy.py # show occupancy detection
+    pc3_oob_ex0.py #  show data on text mode
+    pc3_oob_pyqtgraph_ex1_50.py # plot range profile 
     
 If Run demo program can not find any Raw data output:
       Please set UART to R/W mode: 
