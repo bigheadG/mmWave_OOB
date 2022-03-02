@@ -58,21 +58,22 @@ If Run demo program can not find any Raw data output:
 
     from mmWave import pc3_oob
 
-  ### raspberry pi 4 use ttyS0
-    port = serial.Serial("/dev/ttyS0",baudrate = 921600, timeout = 0.5)
+## UART Seting in different host:
+	  raspberry pi 4 use ttyS0
+	    port = serial.Serial("/dev/ttyS0",baudrate = 921600, timeout = 0.5)
 
-  ### Jetson Nano use ttyTHS1
-      port = serial.Serial("/dev/ttyTHS1",baudrate = 921600, timeout = 0.5)
-    and please modify: 
-    
-  ### use USB-UART
-    port = serial.Serial("/dev/ttyUSB0",baudrate = 921600, timeout = 0.5)
- 
-  ### Mac OS use tty.usbmodemxxxx
-    port = serial.Serial("/dev/tty.usbmodemGY0052854",baudrate = 921600, timeout = 0.5)
-  
-  ### ubuntu NUC
-    port = serial.Serial("/dev/ttyACM1",baudrate = 921600, timeout = 0.5)
+	  Jetson Nano use ttyTHS1
+	      port = serial.Serial("/dev/ttyTHS1",baudrate = 921600, timeout = 0.5)
+	    and please modify: 
+
+	  use USB-UART
+	    port = serial.Serial("/dev/ttyUSB0",baudrate = 921600, timeout = 0.5)
+
+	  Mac OS use tty.usbmodemxxxx
+	    port = serial.Serial("/dev/tty.usbmodemGY0052854",baudrate = 921600, timeout = 0.5)
+
+	  ubuntu NUC
+	    port = serial.Serial("/dev/ttyACM1",baudrate = 921600, timeout = 0.5)
 
 
 ## define
