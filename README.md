@@ -165,8 +165,13 @@ https://user-images.githubusercontent.com/2010446/118247174-7510c880-b4d5-11eb-9
         0  613   v1 -0.366405   1.419079  0.0      0.0
         1  613   v1  8.244106  10.296886  0.0      0.0
     
-    V2: Range Profile: (data type: list)
+ ## V2: Range Profile: (data type: list)
     An array of 256 float complex data:(real,image), The points represent the sum of magnitudes of received antennas.
+    usuage please refer to example:
+    
+    
+![rangeProfile](https://user-images.githubusercontent.com/2010446/156333660-f31976ff-c343-457e-906a-c10b450d0246.jpg)
+  
     
     
     
