@@ -15,6 +15,16 @@ https://projects.raspberrypi.org/en/projects/raspberry-pi-setting-up/3
 
 This repository contains the Batman mmWave-PC3 People Counting & Detection mmWave Sensor SDK. The sample code below consists of instruction for using the mmWave lib. This mmWave-PC3-OOB Python Program will work with Batman BM501-PC3_OOB/BM601-PC3_OOB mmWave Kit solution. This Python Program works with a Raspberry Pi 4 , NVIDIA Jetson Nano, windows/linux computer or MAC with Batman BM501/BM601-PC3_OOB Kit attached via Kit’s HAT Board; and that the BM601/BM501 Kit is an easy-to-use mmWave sensor evaluation kit for Object Sensing and Range Profile. 
 
+BM601 :
+BM601 is a 77- to 79-GHz FMCW Radar Sensor
+	– 76- to 81-GHz coverage with 4 GHz available bandwidth
+	– TX power: 12 dBm
+	– RX noise figure:
+	• 14 dB (76 to 77 GHz)
+	• 15 dB (77 to 81 GHz)
+	Number of receivers x 4
+	Number of transmitters x 3
+
 
 # Hardware:
     Batman kit-601 (ISK)
