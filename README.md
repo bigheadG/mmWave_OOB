@@ -58,7 +58,7 @@ If Run demo program can not find any Raw data output:
 
     from mmWave import pc3_oob
 
-## UART Seting in different host:
+## UART Setting in different host:
 	  raspberry pi 4 use ttyS0
 	    port = serial.Serial("/dev/ttyS0",baudrate = 921600, timeout = 0.5)
 
