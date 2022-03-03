@@ -49,23 +49,23 @@ from pyqtgraph.Qt import QtCore, QtGui
 import numpy as np
 
 import serial
-from mmWave import pc3_oob
+#from mmWave 
+import pc3_oob
 import time
 
 import sys
 
 from threading import Thread
-'''
-import datetime
-from scipy.fftpack import fft
-import numpy as np
-from scipy import signal
-'''
 
 
-cfg = 1
+
+cfg = 0
 PORT_CFG = "/dev/tty.usbmodemGY0050511"
 PORT_DATA = "/dev/tty.usbmodemGY0050514"
+
+
+#PORT_CFG =  "/dev/tty.usbmodemGY0050691"
+#PORT_DATA = "/dev/tty.usbmodemGY0050694"
 
 BANDWIDTH = 0.6144 * 1e9 # GHz/us
 RES = 3 * 1e8 / (2 * BANDWIDTH)  #range resolution = c / (2 * bandwidth) = 0.2441 m 
@@ -83,8 +83,7 @@ pg.setConfigOption('foreground', 'y')
  
 win.setWindowTitle('OOB Radar')
 
-maxlen = 200
-v4 =[]
+
 
 # 1) for detected object scatterPlot
 #win.nextRow()
@@ -94,15 +93,17 @@ w0.setLabel('bottom', 'V1 Object Location (curveS0)', 'm')
 w0.setLabel('left', 'Range', 'm')
 curveS0 = pg.ScatterPlotItem(size =10, pen=pg.mkPen('w'), pxMode=True) #pg.ScatterPlotItem(pxMode=True)   ## Set pxMode=False to allow spots to transform with the view
 w0.addItem(curveS0)
+w0.showGrid(x = True, y = True, alpha = 1.0)  
 
 # 2) for detected object Doppler scatterPlot
 w1 = win.addPlot()
 w1.setRange(xRange=[0,40],yRange= [-40,40]) 
-w1.setLabel('bottom', 'V1 Doppler/Range (curveS1)', 'm')
+w1.setLabel('bottom', 'V1 Range (curveS1)', 'm')
 w1.setLabel('left', 'V1 Doppler', 'm/s')
 
 curveS1 = pg.ScatterPlotItem(size=5, pen=pg.mkPen('g'), pxMode=True)
 w1.addItem(curveS1) 
+w1.showGrid(x = True, y = True, alpha = 1.0)  
 
 # 3)plot Range Profile window setting 
 win.nextRow()
@@ -115,6 +116,7 @@ p2.setLabel('bottom', 'V2 Range Profile (curve5,curve6)', 'm')
 curve5 = p2.plot()
 curve6 = pg.ScatterPlotItem(size =10, pen=pg.mkPen('g'), pxMode=True)
 p2.addItem(curve6)
+p2.showGrid(x = True, y = True, alpha = 1.0)  
 
 
 sensor0A = []
@@ -126,10 +128,11 @@ rangeA  = []
 #
 def updatePlot():
 	global rp,sensor0A,curveS0,p2xtick,curve6,rangeA,rangeAY,curveS1
-	curveS0.setData(x=sensor0A[:,0],y=sensor0A[:,1], pen = 'g', symbol='o') 
-	curve5.setData(p2xtick,rp)
-	curve6.setData(x=rangeA,y=rangeAY, pen = 'g', symbol='o')
-	curveS1.setData(x=rangeA,y=sensor0A[:,3], pen = 'g', symbol='o') 
+	if len(sensor0A) != 0:
+		curveS0.setData(x=sensor0A[:,0],y=sensor0A[:,1], pen = 'g', symbol='o') 
+		curve5.setData(p2xtick,rp)
+		curve6.setData(x=rangeA,y=rangeAY, pen = 'g', symbol='o')
+		curveS1.setData(x=rangeA,y=sensor0A[:,3], pen = 'g', symbol='o') 
 	
 	
 # update all plots
@@ -141,7 +144,7 @@ def update():
 
 timer = pg.QtCore.QTimer()
 timer.timeout.connect(update)
-timer.start(150) #150  80: got(20 Times)   *50ms from uart: 
+timer.start(80) #150  80: got(20 Times)   *50ms from uart: 
 
 #------------------------------------------
 
@@ -192,39 +195,40 @@ def radarExec():
 	(dck,v1,v6,v9)  = radar.tlvRead(False,df = 'DataFrame')
 	#radar.headerShow()
 	
-	'''
 	fn = radar.hdr.frameNumber
-	if prev_fn == fn: 
+	
+	if prev_fn != fn:
 		prev_fn = fn
-		return
-	'''
-	if len(radar.v2) != 0:
-		rp = np.array(radar.v2)
-		 
-	if len(v1)!= 0:
-		v1A  = v1.loc[:,['X','Y','Z','doppler']]
-		sensor0A = v1A.to_numpy()
-		rA = np.absolute(sensor0A[:,0] + sensor0A[:,1]* 1j) # r= a+bj
-		rangeAY = []
-		rangeA = []
-		for i in rA:
-			rangeIdx = int(np.round(i * scaleX )) 
-			rangeA.append(p2xtick[rangeIdx])
-			rangeAY.append(rp[rangeIdx])
+
+		if len(radar.v2) != 0:
+			rp = np.array(radar.v2)
+			#print(radar.v2)
+			 
+		if len(v1)!= 0:
+			v1A  = v1.loc[:,['X','Y','Z','doppler']]
+			sensor0A = v1A.to_numpy()
+			rA = np.absolute(sensor0A[:,0] + sensor0A[:,1]* 1j) # r= a+bj
+			rangeAY = []
+			rangeA = []
+			for i in rA:
+				rangeIdx = int(np.round(i * scaleX ))
+				rangeIdx = rangeIdx if rangeIdx < 256 else 255
+				rangeA.append(p2xtick[rangeIdx])
+				rangeAY.append(rp[rangeIdx])
 		
-		print("======sensor0A: {:} ============len:{:}".format(radar.frameNumber,radar.hdr.totalPackLen))
-		print(sensor0A)
-		print("=============rangeA==============")
-		print(rangeA)
-		print("===========rangeAY==================")
-		print(rangeAY)
-	
-	if not v6.empty:
-		print(v6)
-	if not v9.empty:
-		print(v9) 
-	
-	
+			print("======sensor0A: {:} ============len:{:}".format(radar.frameNumber,radar.hdr.totalPackLen))
+			print(sensor0A)
+			print("=============rangeA==============")
+			print(rangeA)
+			print("===========rangeAY==================")
+			print(rangeAY)
+		
+		if not v6.empty:
+			print(v6)
+		if not v9.empty:
+			print(v9) 
+	else:
+		port.flushInput()
 	
 		
 		 
