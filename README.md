@@ -13,6 +13,10 @@ Current PI's OS is supports python 3.7.0
 
 https://projects.raspberrypi.org/en/projects/raspberry-pi-setting-up/3
 
+
+https://user-images.githubusercontent.com/2010446/157371299-34922425-b60b-4d0a-a1b4-d9818dc4e0f2.mp4
+
+
 This repository contains the Batman mmWave-PC3 People Counting & Detection mmWave Sensor SDK. The sample code below consists of instruction for using the mmWave lib. This mmWave-PC3-OOB Python Program will work with Batman BM501-PC3_OOB/BM601-PC3_OOB mmWave Kit solution. This Python Program works with a Raspberry Pi 4 , NVIDIA Jetson Nano, windows/linux computer or MAC with Batman BM501/BM601-PC3_OOB Kit attached via Kit’s HAT Board; and that the BM601/BM501 Kit is an easy-to-use mmWave sensor evaluation kit for Object Sensing and Range Profile. 
 
 BM601 :
